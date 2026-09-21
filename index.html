@@ -116,9 +116,48 @@
     color:var(--burgundy);
   }
   footer .small{display:block;font-family:var(--sans);font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-top:14px;font-style:normal;}
+/* Падающие лепестки */
+.petals{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;   /* чтобы лепестки не мешали кликам */
+  overflow:hidden;
+  z-index:2;
+}
+.petal{
+  position:absolute;
+  top:-40px;
+  width:14px;
+  height:14px;
+  border-radius:50% 0 50% 50%;
+  opacity:0.7;
+  animation-name:petalFall;
+  animation-timing-function:linear;
+  animation-iteration-count:infinite;
+  will-change:transform;
+}
+@keyframes petalFall{
+  0%{
+    transform:translateY(-40px) rotate(0deg) translateX(0);
+  }
+  50%{
+    transform:translateY(50vh) rotate(180deg) translateX(30px);
+  }
+  100%{
+    transform:translateY(105vh) rotate(360deg) translateX(-20px);
+  }
+}
 </style>
 </head>
 <body>
+  <script>
+ // ... код таймера, лепестков, параллакса ...
+  </script>
+<!-- ПАДАЮЩИЕ ЛЕПЕСТКИ -->
+<div class="petals" id="petals" aria-hidden="true"></div>
 
   <!-- ГЛАВНЫЙ ЭКРАН -->
   <section class="hero">
@@ -148,46 +187,69 @@
     <a class="btn" href="https://yandex.ru/maps/?text=улица%20Московская%20131%20ресторан%20Мезон" target="_blank" rel="noopener">Открыть в Яндекс.Картах</a>
   </section>
 
+<!-- ТАЙМЕР ОБРАТНОГО ОТСЧЁТА -->
+<section class="section" id="countdown-section">
+  <h2>До нашей свадьбы осталось</h2>
+  <div class="divider"></div>
+  <div class="countdown">
+    <div class="cd-item">
+      <div class="cd-number" id="cd-days">00</div>
+      <div class="cd-label">дней</div>
+    </div>
+    <div class="cd-item">
+      <div class="cd-number" id="cd-hours">00</div>
+      <div class="cd-label">часов</div>
+    </div>
+    <div class="cd-item">
+      <div class="cd-number" id="cd-minutes">00</div>
+      <div class="cd-label">минут</div>
+    </div>
+    <div class="cd-item">
+      <div class="cd-number" id="cd-seconds">00</div>
+      <div class="cd-label">секунд</div>
+    </div>
+  </div>
+</section>
+
   <!-- РАСПИСАНИЕ -->
   <section class="section">
-    <div class="sub">Программа дня</div>
     <h2>Расписание</h2>
     <div class="divider"></div>
     <div class="timeline">
       <div class="tl-item">
-        <div class="tl-time">14:30</div>
-        <div class="tl-label">Сбор гостей</div>
+        <div class="tl-time">15:30</div>
+        <div class="tl-label">Сбор гостей в ресторане</div>
         <div class="tl-line"></div>
       </div>
       <div class="tl-item">
-        <div class="tl-time">15:00</div>
-        <div class="tl-label">Свадебная церемония</div>
+        <div class="tl-time">15:00 - 16:00</div>
+        <div class="tl-label">Выездная церемония</div>
         <div class="tl-line"></div>
       </div>
       <div class="tl-item">
-        <div class="tl-time">16:00</div>
-        <div class="tl-label">Начало банкета</div>
+        <div class="tl-time">17:00</div>
+        <div class="tl-label">Банкет</div>
         <div class="tl-line"></div>
       </div>
       <div class="tl-item">
-        <div class="tl-time">23:00</div>
-        <div class="tl-label">Завершение вечера</div>
+        <div class="tl-time">22:00 - 23:00</div>
+        <div class="tl-label">Страшно-веселая тусовка</div>
       </div>
     </div>
   </section>
 
   <!-- ПОЖЕЛАНИЯ -->
   <section class="section">
-    <div class="sub">Детали</div>
     <h2>Наши пожелания</h2>
     <div class="divider"></div>
-    <div class="wish"><p>Мы очень старались сделать праздник красивым и будем рады, если при выборе наряда вы отдадите предпочтение цветам свадьбы.</p></div>
+    <div class="wish"><p>Мы очень старались сделать праздник красивым и будем рады, если при выборе наряда вы отдадите предпочтение пастельным оттенкам.</p></div>
     <div class="wish"><p>Если хотите подарить нам ценный и нужный подарок, мы будем очень благодарны за вклад в бюджет нашей молодой семьи.</p></div>
     <div class="wish"><p>Будем благодарны, если вы воздержитесь от криков «Горько» на празднике, ведь поцелуй — знак выражения чувств, он не может быть по заказу.</p></div>
+    <div class="wish"><p>По возможности, позаботьтесь о том, чтобы провести этот праздник без детей.</p></div>
   </section>
 
+  <!-- ДРЕСС-КОД -->
   <section class="section">
-    <div class="sub">Дресс-код</div>
     <h2>Цвета нашей свадьбы</h2>
     <div class="divider"></div>
     <p>Будем счастливы, если в своих нарядах вы поддержите палитру нашего торжества:</p>
@@ -200,13 +262,100 @@
   </section>
 
   <!-- АНКЕТА -->
-  <section class="section">
-    <div class="sub">Подтвердите Ваше присутсвие заполнив анкету</div>
-    <h2>Анкета гостя</h2>
-    <div class="divider"></div>
-    <p>Пожалуйста, заполните небольшую анкету, чтобы мы могли учесть ваши пожелания и всё подготовить.</p>
-    <a class="btn" href="#" target="_blank" rel="noopener">Заполнить анкету</a>
-  </section>
+<!-- АНКЕТА -->
+<section class="section" id="rsvp-section">
+  <div class="sub">Подтверждение</div>
+  <h2>Анкета гостя</h2>
+  <div class="divider"></div>
+  <p>Пожалуйста, заполните анкету до <strong>1 ноября 2026</strong>, чтобы мы могли учесть ваши пожелания и всё подготовить.</p>
+
+  <form id="rsvp-form" method="POST" class="rsvp-form">
+    <!-- Скрытые поля Web3Forms -->
+    <input type="hidden" name="access_key" value="a9fc67c7-0cb7-4231-9633-1cd76a0fa947">
+    <input type="hidden" name="subject" value="Новый ответ на анкету — свадьба Павла и Дарьи">
+    <input type="hidden" name="from_name" value="Свадебный сайт">
+    <input type="checkbox" name="botcheck" style="display:none">
+
+    <!-- Имя -->
+    <div class="form-group">
+      <label>Ваше имя и фамилия *</label>
+      <input type="text" name="Гость" required placeholder="Иван Иванов">
+    </div>
+
+    <!-- Присутствие -->
+    <div class="form-group">
+      <label>Сможете ли вы присутствовать? *</label>
+      <div class="radio-group">
+        <label class="radio-option">
+          <input type="radio" name="Присутствие" value="Да, обязательно буду" required>
+          <span>Да, обязательно буду</span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="Присутствие" value="К сожалению, не смогу">
+          <span>К сожалению, не смогу</span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="Присутствие" value="Пока не знаю">
+          <span>Пока не знаю</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Имена гостей -->
+    <div class="form-group">
+      <label>Имена гостей, которые будут с вами</label>
+      <input type="text" name="Имена гостей" placeholder="Если придёте не один(а)">
+    </div>
+
+    <!-- Дети -->
+    <div class="form-group">
+      <label>Будут ли с вами дети?</label>
+      <div class="radio-group">
+        <label class="radio-option">
+          <input type="radio" name="Дети" value="Нет">
+          <span>Нет</span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="Дети" value="Да">
+          <span>Да</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Возраст детей -->
+    <div class="form-group">
+      <label>Если да — укажите количество и возраст</label>
+      <input type="text" name="Возраст детей" placeholder="Например: 2 ребёнка, 5 и 8 лет">
+    </div>
+
+    <!-- Напитки -->
+    <div class="form-group">
+      <label>Что предпочитаете из напитков?</label>
+      <p class="form-hint">Можно выбрать несколько</p>
+      <div class="checkbox-group">
+        <label class="checkbox-option"><input type="checkbox" name="Напитки" value="Красное вино"><span>Красное вино</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="Напитки" value="Белое вино"><span>Белое вино</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="Напитки" value="Шампанское"><span>Шампанское</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="Напитки" value="Виски"><span>Виски</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="Напитки" value="Водка"><span>Водка</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="Напитки" value="Коньяк"><span>Коньяк</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="Напитки" value="Безалкогольные"><span>Безалкогольные</span></label>
+      </div>
+    </div>
+
+    <!-- Пожелания -->
+    <div class="form-group">
+      <label>Пожелания или комментарии</label>
+      <textarea name="Пожелания" rows="3" placeholder="Аллергии, особое меню, музыкальные предпочтения..."></textarea>
+    </div>
+
+    <!-- Кнопка отправки -->
+    <button type="submit" class="btn form-submit">Отправить анкету</button>
+
+    <!-- Результат -->
+    <div id="rsvp-result" class="form-result"></div>
+  </form>
+</section>
 
   <!-- КОНТАКТЫ -->
   <footer>
@@ -214,13 +363,235 @@
     <span class="small">28 ноября 2026</span>
   </footer>
 
+<style>
+/* === Анкета гостя === */
+.rsvp-form{
+  max-width: 560px;
+  margin: 20px auto 0;
+  text-align: left;
+}
+.form-group{
+  margin-bottom: 26px;
+}
+.form-group label{
+  display:block;
+  font-size: 13px;
+  letter-spacing:.15em;
+  text-transform: uppercase;
+  color: var(--burgundy);
+  margin-bottom: 10px;
+  font-weight: 400;
+}
+.form-hint{
+  font-size: 12px;
+  color: var(--muted);
+  margin: -6px 0 10px;
+  font-style: italic;
+}
+.rsvp-form input[type="text"],
+.rsvp-form input[type="email"],
+.rsvp-form textarea{
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid rgba(123,30,43,.25);
+  background: rgba(255,255,255,.5);
+  border-radius: 8px;
+  font-family: var(--sans);
+  font-size: 15px;
+  color: var(--text);
+  transition: border-color .3s ease, background .3s ease;
+}
+.rsvp-form input[type="text"]:focus,
+.rsvp-form input[type="email"]:focus,
+.rsvp-form textarea:focus{
+  outline: none;
+  border-color: var(--burgundy);
+  background: #fff;
+}
+.rsvp-form textarea{
+  resize: vertical;
+  min-height: 80px;
+}
+.radio-group,
+.checkbox-group{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.checkbox-group{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.radio-option,
+.checkbox-option{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: 8px;
+  transition: background .3s ease;
+}
+.radio-option:hover,
+.checkbox-option:hover{
+  background: rgba(123,30,43,.06);
+}
+.radio-option input,
+.checkbox-option input{
+  accent-color: var(--burgundy);
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+}
+.form-submit{
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  cursor: pointer;
+  background: transparent;
+}
+.form-submit:hover{
+  background: var(--burgundy);
+  color: #fff;
+}
+.form-submit:disabled{
+  opacity: .6;
+  cursor: not-allowed;
+}
+.form-result{
+  margin-top: 20px;
+  text-align: center;
+  font-family: var(--serif);
+  font-size: 20px;
+  color: var(--olive);
+  min-height: 30px;
+}
+.form-result.error{
+  color: #b03030;
+}
+
+@media (max-width: 500px){
+  .checkbox-group{
+    grid-template-columns: 1fr;
+  }
+}
+</style>
 <script>
-  // Плавное появление блоков при скролле
+// Падающие лепестки
+(function createPetals(){
+  const container = document.getElementById('petals');
+  if (!container) return;
+
+  // Палитра лепестков (в тон сайта)
+  const colors = [
+    '#f6d3d0', // нежно-розовый
+    '#e9b6b6', // пудровый
+    '#f5ede4', // бежевый
+    '#7b1e2b', // бургунди (редко)
+    '#a8b27a'  // оливковый
+  ];
+
+  const PETAL_COUNT = 18; // сколько лепестков одновременно
+
+  for (let i = 0; i < PETAL_COUNT; i++) {
+    const petal = document.createElement('span');
+    petal.className = 'petal';
+
+    // случайные параметры
+    const size     = 8 + Math.random() * 12;             // 8–20px
+    const left     = Math.random() * 100;                // 0–100% ширины
+    const duration = 8 + Math.random() * 8;              // 8–16 сек падения
+    const delay    = Math.random() * 8;                  // задержка старта
+    const color    = colors[Math.floor(Math.random() * colors.length)];
+
+    petal.style.left              = left + 'vw';
+    petal.style.width             = size + 'px';
+    petal.style.height            = size + 'px';
+    petal.style.background        = color;
+    petal.style.animationDuration = duration + 's';
+    petal.style.animationDelay    = '-' + delay + 's';   // минус — чтобы летели уже в процессе
+    petal.style.opacity           = 0.4 + Math.random() * 0.4;
+
+    container.appendChild(petal);
+  }
+})();
+ 
+ // Плавное появление блоков при скролле
   const sections = document.querySelectorAll('.section');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.15 });
   sections.forEach(s => observer.observe(s));
+// Параллакс при скролле
+const hero = document.querySelector('.hero');
+const heroContent = document.querySelector('.hero-content');
+
+let ticking = false;
+
+window.addEventListener('scroll', () => {
+  if (!ticking) {
+    window.requestAnimationFrame(() => {
+      const scrollY = window.scrollY;
+      const heroHeight = hero.offsetHeight;
+
+      // Пока hero виден на экране — двигаем
+      if (scrollY < heroHeight) {
+        // Контент двигается вверх чуть быстрее обычного
+        heroContent.style.transform = `translateY(${scrollY * 0.3}px)`;
+        // Плавно затемняется по мере прокрутки
+        heroContent.style.opacity = 1 - scrollY / (heroHeight * 0.9);
+        // Сам фон чуть подтормаживает (эффект глубины)
+        hero.style.backgroundPositionY = `${scrollY * 0.4}px`;
+      }
+      ticking = false;
+    });
+    ticking = true;
+  }
+});
+// === ТАЙМЕР ОБРАТНОГО ОТСЧЁТА ===
+(function initCountdown(){
+  const weddingDate = new Date('2026-11-28T15:00:00').getTime();
+
+  const elDays    = document.getElementById('cd-days');
+  const elHours   = document.getElementById('cd-hours');
+  const elMinutes = document.getElementById('cd-minutes');
+  const elSeconds = document.getElementById('cd-seconds');
+
+  if (!elDays || !elHours || !elMinutes || !elSeconds) {
+    console.error('Не найдены элементы таймера');
+    return;
+  }
+
+  const pad = (n) => String(n).padStart(2, '0');
+
+  function updateCountdown() {
+    const diff = weddingDate - new Date().getTime();
+
+    if (diff <= 0) {
+      elDays.textContent    = '00';
+      elHours.textContent   = '00';
+      elMinutes.textContent = '00';
+      elSeconds.textContent = '00';
+      return;
+    }
+
+    const days    = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours   = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    elDays.textContent    = pad(days);
+    elHours.textContent   = pad(hours);
+    elMinutes.textContent = pad(minutes);
+    elSeconds.textContent = pad(seconds);
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+})();
 </script>
 </body>
 </html>
