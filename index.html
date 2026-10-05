@@ -217,13 +217,13 @@
     <div class="divider"></div>
     <div class="timeline">
       <div class="tl-item">
-        <div class="tl-time">15:30</div>
+        <div class="tl-time">15:00 - 16:00</div>
         <div class="tl-label">Сбор гостей в ресторане</div>
         <div class="tl-line"></div>
       </div>
       <div class="tl-item">
-        <div class="tl-time">15:00 - 16:00</div>
-        <div class="tl-label">Выездная церемония</div>
+        <div class="tl-time">15:30</div>
+        <div class="tl-label">Знакомство и фуршет</div>
         <div class="tl-line"></div>
       </div>
       <div class="tl-item">
@@ -244,7 +244,8 @@
     <div class="divider"></div>
     <div class="wish"><p>Мы очень старались сделать праздник красивым и будем рады, если при выборе наряда вы отдадите предпочтение пастельным оттенкам.</p></div>
     <div class="wish"><p>Если хотите подарить нам ценный и нужный подарок, мы будем очень благодарны за вклад в бюджет нашей молодой семьи.</p></div>
-    <div class="wish"><p>Будем признательны, если вы воздержитесь от криков «Горько» на празднике, ведь поцелуй — знак выражения чувств, он не может быть по заказу.</p></div>
+    <div class="wish"><p>Будем благодарны, если вы воздержитесь от криков «Горько» на празднике, ведь поцелуй — знак выражения чувств, он не может быть по заказу.</p></div>
+    <div class="wish"><p>По возможности, позаботьтесь о том, чтобы провести этот праздник без детей.</p></div>
   </section>
 
   <!-- ДРЕСС-КОД -->
@@ -591,6 +592,63 @@ window.addEventListener('scroll', () => {
   updateCountdown();
   setInterval(updateCountdown, 1000);
 })();
+<script>
+// === Отправка формы RSVP ===
+(function(){
+  const form = document.getElementById('rsvp-form');
+  if (!form) {
+    console.warn('Форма RSVP не найдена');
+    return;
+  }
+
+  const result = document.getElementById('rsvp-result');
+  const submitBtn = form.querySelector('.form-submit');
+
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Отправляем...';
+    result.textContent = '';
+    result.classList.remove('error');
+
+    const formData = new FormData(form);
+    const object = Object.fromEntries(formData);
+
+    // Собираем все отмеченные напитки в одну строку
+    const drinks = formData.getAll('Напитки');
+    if (drinks.length > 0) {
+      object['Напитки'] = drinks.join(', ');
+    }
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(object)
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        result.textContent = 'Спасибо! Ваша анкета получена ❤';
+        form.reset();
+      } else {
+        result.textContent = 'Что-то пошло не так. Попробуйте ещё раз.';
+        result.classList.add('error');
+      }
+    } catch (err) {
+      result.textContent = 'Ошибка соединения. Проверьте интернет.';
+      result.classList.add('error');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Отправить анкету';
+    }
+  });
+})();
 </script>
 </body>
+</html>
 </html>
